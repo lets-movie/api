@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  lm-api:
+    container_name: lm-api
+    image: node:20.10.0-alpine
+    working_dir: /app
+    command: yarn start:dev
+    ports:
+      - 3001:3000
+    volumes:
+      - .:/app
