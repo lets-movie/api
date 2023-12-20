@@ -1,12 +1,27 @@
 version: '3.8'
 
 services:
-  lm-api:
-    container_name: lm-api
+  api:
+    container_name: api
     image: node:20.10.0-alpine
     working_dir: /app
-    command: yarn start:dev
+    command: sh -c "yarn install && yarn start:dev"
     ports:
-      - 3001:3000
+      - 3000:3000
     volumes:
       - .:/app
+
+  mongo:
+    container_name: mongo
+    image: mongo:7.0.4
+    ports:
+      - 27017:27017
+    volumes:
+      - lm.mongo.config:/data/configdb
+      - lm.mongo.db:/data/db
+
+volumes:
+  lm.mongo.config:
+    driver: local
+  lm.mongo.db:
+    driver: local
