@@ -2,6 +2,7 @@ import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MovieRepository } from './movie.repository';
+import { ScrapperService } from './scrapper.service';
 import { TmdbAdapter } from './tmdb.adapter';
 import { TmdbProcessor } from './tmdb.processor';
 
@@ -11,6 +12,6 @@ import { TmdbProcessor } from './tmdb.processor';
     BullModule.registerQueue({ name: 'tmdb' }),
     MongooseModule.forRoot('mongodb://mongo/letsMovie'),
   ],
-  providers: [TmdbProcessor, MovieRepository, TmdbAdapter],
+  providers: [ScrapperService, TmdbProcessor, MovieRepository, TmdbAdapter],
 })
 export class ScrapperModule {}

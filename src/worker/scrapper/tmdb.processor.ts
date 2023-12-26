@@ -6,28 +6,16 @@ import {
   Processor,
 } from '@nestjs/bull';
 import { Job } from 'bull';
-import { MovieRepository } from './movie.repository';
-import { TmdbAdapter } from './tmdb.adapter';
+import { ScrapperService } from './scrapper.service';
 
 @Processor('tmdb')
 export class TmdbProcessor {
-  constructor(
-    private tmdbAdapter: TmdbAdapter,
-    private movieRepository: MovieRepository,
-  ) {}
+  constructor(private scrapperService: ScrapperService) {}
 
   @Process('getMovieDetails')
   async getMovieDetails(job: Job<{ id: number }>) {
     const { id } = job.data;
-
-    console.log('Getting movie', id);
-
-    const movie = await this.tmdbAdapter.getMovieDetails(id);
-    await this.movieRepository.upsert(movie);
-
-    console.log('Success');
-
-    return {};
+    this.scrapperService.getMovieDetails(id);
   }
 
   @OnQueueActive()
